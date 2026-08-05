@@ -1,6 +1,6 @@
 # Reproducibility materials — Coiling in Flexible Shaft Torque Models
 
-Supplemental code for TMECH-02-2026-23825, "Coiling in Flexible Shaft Torque Models as a Solution for Reliable Remote Actuation." Covers the writhe (Ω) computation and the preprocessing pipeline described in the Methods section and in the response to Reviewer 1, item D1.
+Supplemental code for TMECH-02-2026-23825, "Coiling in Flexible Shaft Torque Models as a Solution for Reliable Remote Actuation." Covers the writhe (Ω) computation and the preprocessing pipeline described in the Methods section.
 
 ## Pipeline overview
 
