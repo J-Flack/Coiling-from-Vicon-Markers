@@ -1,0 +1,15 @@
+# MATLAB
+*.asv
+*.m~
+slprj/
+*.slxc
+*.autosave
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large/raw data - deposit separately (see data/README.md), don't commit here
+*.mat
+*.csv
+!data/*.csv
