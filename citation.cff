@@ -1,11 +1,32 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "If you use this code, please cite it using the metadata below."
+type: software
+title: "Coiling-from-Vicon-Markers: writhe (Ω) computation and preprocessing pipeline for flexible shaft torque modeling"
 authors:
-- family-names: "Flack"
-  given-names: "James"
-  orcid: "https://orcid.org/0009-0006-8575-1867"
-title: "Coiling-from-Vicon-Markers"
+  - family-names: Flack
+    given-names: James
+    affiliation: "Vrije Universiteit Brussel"
+    email: james.flack@vub.be
+  - family-names: Wu
+    given-names: Mengnan
+    affiliation: "Vrije Universiteit Brussel"
+  - family-names: Verstraten
+    given-names: Tom
+    affiliation: "Vrije Universiteit Brussel"
+repository-code: "https://github.com/J-Flack/Coiling-from-Vicon-Markers"
+license: MIT
 version: 1.0.0
-doi: 10.5281/zenodo.1234
-date-released: 2026-08-06
-url: "https://github.com/J-Flack/Coiling-from-Vicon-Markers"
+date-released: "2026-08-06"
+preferred-citation:
+  type: article
+  title: "Coiling in Flexible Shaft Torque Models as a Solution for Reliable Remote Actuation"
+  authors:
+    - family-names: Flack
+      given-names: James
+    - family-names: Wu
+      given-names: Mengnan
+    - family-names: Verstraten
+      given-names: Tom
+  journal: "IEEE/ASME Transactions on Mechatronics"
+  year: 2026
+  status: "submitted"
