@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Flack"
+  given-names: "James"
+  orcid: "https://orcid.org/0009-0006-8575-1867"
+title: "Coiling-from-Vicon-Markers"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2026-08-06
+url: "https://github.com/J-Flack/Coiling-from-Vicon-Markers"
