@@ -1,11 +1,7 @@
 # Reproducibility materials — Coiling in Flexible Shaft Torque Models
-
 Supplemental code for TMECH-02-2026-23825, "Coiling in Flexible Shaft Torque Models as a Solution for Reliable Remote Actuation." Covers the writhe (Ω) computation and the preprocessing pipeline described in the Methods section.
-
 ## Pipeline overview
-
 Two independent, unsynchronized systems record each trial: VICON Nexus (3D marker positions along the shaft, plus a 4-marker rigid cluster on the driven fixture) and the rig controller (motor-side torsion angle, bend angle, driven-end output torque), sampled much faster than VICON.
-
 1. **In-Nexus processing.** A rigid-link marker template is built in VICON Nexus. Gaps from marker occlusion are filled by spline interpolation; trajectories are then low-pass filtered (4th-order bidirectional/zero-phase Butterworth, 6 Hz cutoff) before export. This step happens entirely inside Nexus, not in this codebase.
 2. **Load** (`loadViconCSV.m`, `loadBeckhoffMat.m`) — parse marker trajectories and the rig-controller log into a common format; channels are identified against the rig's documentation to confirm sign conventions.
 3. **Rate matching** — the rig-controller log is downsampled to the VICON frame rate.
@@ -15,11 +11,8 @@ Two independent, unsynchronized systems record each trial: VICON Nexus (3D marke
 7. **Per-trial slicing** — each trial is further split into positive/negative torsion direction and rising/falling half-cycles by indexing into the centerline and the aligned torsion/torque channels using each trial's sample range.
 8. **Ω computation** (`writheACN.m`, `calculateSampleACNWritheAll.m`, `runSampleACNWritheAll.m`, `runSampleWrithe.m`) — signed writhe is computed per frame from the sliced centerline via the discretized Gauss double integral (closed-form solid-angle formula for each segment pair). Regularization near the singularity: neighbor-index exclusion (segment pairs within `|i-j| <= k_excl` are skipped), epsilon-guarded normalization of cross products, and clamping of the dot product to [-1, 1] before `asin`.
 9. **Model fitting** (`fit_torque_model.m`) — the torque model is fit per shaft/direction using the aligned torsion angle, the computed writhe, and the measured output torque (warm-started nonlinear least squares).
-
 `SegDataAnalyser.m` is included as the top-level driver that ties stages 6-9 together for a given segmented-data (`wts`) file; note it also contains several unused/commented-out writhe methods (DirectGauss, Fuller, PolarPriorNeukirch, Starostin, GaussSumNaive, etc.) retained from development — only the ACN path (`writheACN.m`) was used for the reported fits.
-
 ## Files
-
 | File | Stage | Role |
 |---|---|---|
 | `loadViconCSV.m` | 2 | Parse exported VICON marker CSV |
@@ -36,15 +29,12 @@ Two independent, unsynchronized systems record each trial: VICON Nexus (3D marke
 | `runSampleWrithe.m` | 8 | Single-sample writhe runner |
 | `fit_torque_model.m` | 9 | Nonlinear least-squares torque model fit |
 | `SegDataAnalyser.m` | 6-9 | Top-level driver tying the above together |
-
 ## Requirements
-
 MATLAB (base MATLAB + Curve Fitting Toolbox, for the smoothing spline and `fittype`/`fitoptions` calls).
-
 ## Data
-
-Raw VICON marker exports and rig-controller logs are not included in this repository due to size. [Add data availability statement / repository DOI here, e.g. an institutional or Zenodo data deposit, per journal/VUB policy.]
-
+Raw VICON marker exports and rig-controller logs are not included in this repository due to their size and number. **[TODO: confirm before final submission]** These will be made available via [Zenodo / VUB Research Data Repository — pick one] under DOI [xx], consistent with Horizon Europe open science requirements for the underlying MSCA grant (101119433); until that deposit is made, raw data are available from the corresponding author upon reasonable request.
 ## Citation
+If you use this code, please cite it via `citation.cff` (also archived on Zenodo, DOI: 10.5281/zenodo.22096159 — this concept DOI always resolves to the latest version).
 
-[Add manuscript citation once accepted / DOI once minted.]
+For the manuscript this code accompanies:
+J. Flack, M. Wu, and T. Verstraten, "Coiling in Flexible Shaft Torque Models as a Solution for Reliable Remote Actuation," *IEEE/ASME Transactions on Mechatronics*, under review (manuscript TMECH-02-2026-23825). **[TODO: replace with full citation and DOI once accepted/published.]**
