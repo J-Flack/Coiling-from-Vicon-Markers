@@ -10,8 +10,7 @@ Two independent, unsynchronized systems record each trial: VICON Nexus (3D marke
 6. **Centerline reconstruction** (`computeShaftCenterline.m`, `buildRigidFrameAnchors.m`) — run once on the full aligned recording: consecutive marker triplets are averaged per frame to cancel the spiral mounting offset, then a smoothing spline is fit through the triplet centers and evaluated at a fixed number of points to give a dense 3D centerline curve.
 7. **Per-trial slicing** — each trial is further split into positive/negative torsion direction and rising/falling half-cycles by indexing into the centerline and the aligned torsion/torque channels using each trial's sample range.
 8. **Ω computation** (`writheACN.m`, `calculateSampleACNWritheAll.m`, `runSampleACNWritheAll.m`, `runSampleWrithe.m`) — signed writhe is computed per frame from the sliced centerline via the discretized Gauss double integral (closed-form solid-angle formula for each segment pair). Regularization near the singularity: neighbor-index exclusion (segment pairs within `|i-j| <= k_excl` are skipped), epsilon-guarded normalization of cross products, and clamping of the dot product to [-1, 1] before `asin`.
-9. **Model fitting** (`fit_torque_model.m`) — the torque model is fit per shaft/direction using the aligned torsion angle, the computed writhe, and the measured output torque (warm-started nonlinear least squares).
-`SegDataAnalyser.m` is included as the top-level driver that ties stages 6-9 together for a given segmented-data (`wts`) file; note it also contains several unused/commented-out writhe methods (DirectGauss, Fuller, PolarPriorNeukirch, Starostin, GaussSumNaive, etc.) retained from development — only the ACN path (`writheACN.m`) was used for the reported fits.
+`SegDataAnalyser.m` is included as the top-level driver that ties stages 6-8 together for a given segmented-data (`wts`) file; note it also contains several unused/commented-out writhe methods (DirectGauss, Fuller, PolarPriorNeukirch, Starostin, GaussSumNaive, etc.) retained from development — only the ACN path (`writheACN.m`) was used to produce the coiling results in this repository.
 ## Files
 | File | Stage | Role |
 |---|---|---|
@@ -27,12 +26,11 @@ Two independent, unsynchronized systems record each trial: VICON Nexus (3D marke
 | `calculateSampleACNWritheAll.m` | 8 | Per-frame writhe over a full sample |
 | `runSampleACNWritheAll.m` | 8 | Batch runner across samples |
 | `runSampleWrithe.m` | 8 | Single-sample writhe runner |
-| `fit_torque_model.m` | 9 | Nonlinear least-squares torque model fit |
-| `SegDataAnalyser.m` | 6-9 | Top-level driver tying the above together |
+| `SegDataAnalyser.m` | 6-8 | Top-level driver tying the above together |
 ## Requirements
-MATLAB (base MATLAB + Curve Fitting Toolbox, for the smoothing spline and `fittype`/`fitoptions` calls).
+MATLAB (base MATLAB + Curve Fitting Toolbox, for the smoothing spline and `fitoptions` calls; Signal Processing Toolbox, for `finddelay` in the VICON/rig-controller alignment step; Statistics and Machine Learning Toolbox, for `gscatter` in the sample-writhe batch runner).
 ## Data
-Raw VICON marker exports and rig-controller logs are not included in this repository due to their size and number. **[TODO: confirm before final submission]** These will be made available via [Zenodo / VUB Research Data Repository — pick one] under DOI [xx], consistent with Horizon Europe open science requirements for the underlying MSCA grant (101119433); until that deposit is made, raw data are available from the corresponding author upon reasonable request.
+The aligned, trial-segmented dataset used to produce the results in this manuscript (`viconAligned`, `beckhoffAligned`, `align`, `segs`, and `centerline` for all five tested shafts) is archived on Zenodo, DOI: [10.5281/zenodo.22108526](https://doi.org/10.5281/zenodo.22108526), consistent with Horizon Europe open science requirements for the underlying MSCA grant (101119433). The fully raw VICON marker CSV exports and rig-controller logs are not included in this repository or in that deposit, due to their size and number; they are available from the corresponding author upon reasonable request.
 ## Citation
 If you use this code, please cite it via `citation.cff` (also archived on Zenodo, DOI: 10.5281/zenodo.22096159 — this concept DOI always resolves to the latest version).
 
